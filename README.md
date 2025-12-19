@@ -28,7 +28,7 @@ Search_Products_VueJs/
 │   │   ├── CardProduct.vue    # Tarjeta individual de producto
 │   │   └── SearchInput.vue    # Componente de búsqueda 
 │   ├── service/               # Servicios y lógica de negocio
-│   │   └── Service.ts         # Servicio para llamadas API (Axios)
+│   │   └── Service.ts         # Servicio para llamadas API 
 │   ├── styles/               # Estilos CSS organizados
 │   │   ├── reset.css         # Reset CSS para consistencia cross-browser
 │   │   ├── utilities.css     # Clases de utilidad CSS
@@ -93,12 +93,12 @@ pnpm preview
 - **`SearchInput.vue`**: Campo de búsqueda 
 
 ### Servicios
-- **`Service.ts`**: Servicio centralizado para manejar todas las llamadas a la API usando Axios
+- **`Service.ts`**: Servicio centralizado para manejar todas las llamadas a la API usando fetch
 
 ### Estilos CSS
 - **`reset.css`**: Normaliza estilos entre diferentes navegadores
-- **`variables.css`**: Variables CSS personalizadas (colores, fuentes, breakpoints)
-- **`utilities.css`**: Clases utilitarias para espaciado, tipografía, etc.
+- **`variables.css`**: Variables CSS personalizadas (colores, bordes y otros)
+- **`utilities.css`**: Clases utilitarias 
 - **`style.css`**: Estilos principales de la aplicación
 
 ## 🔧 Funcionalidades Técnicas
@@ -251,17 +251,11 @@ export const ProductService= {
 ```
 
 
-### Convenciones de Código
-- Usa TypeScript para todo el código
-- Sigue la estructura de componentes existente
-- Mantén los estilos CSS organizados
-- Añade comentarios para código complejo
-
 ## 📄 Licencia
 
 Distribuido bajo la Licencia MIT. Ver `LICENSE` para más información.
 
-## 🌟 Agradecimientos
+## 🌟 Herramientas aplicadas
 
 - [Vue.js](https://vuejs.org) - Framework JavaScript progresivo
 - [Vite](https://vitejs.dev) - Herramienta de construcción frontend
