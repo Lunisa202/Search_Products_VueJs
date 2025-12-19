@@ -11,7 +11,6 @@ const isLoading = ref<boolean>(false)
 const error = ref<string | null>(null)
 const searchInputRef = ref<InstanceType<typeof SearchInput> | null>(null)
 
-// Cargar los productos iniciales
 onMounted(async () => {
   try {
     isLoading.value = true
@@ -51,9 +50,7 @@ const handleClearSearch = (): void => {
   error.value = null
 }
 
-// Computed: Determina qué productos mostrar
 const displayedProducts = computed((): Product[] => {
-  // Si hay resultados de búsqueda, mostrarlos
   if (searchResults.value.length > 0) {
     return searchResults.value
   }
@@ -65,17 +62,14 @@ const displayedProducts = computed((): Product[] => {
   return productsList.value
 })
 
-// Computed: Verificar si mostrar "sin resultados"
 const showNoResults = computed((): boolean => {
   return lastSearchTerm.value !== '' && searchResults.value.length === 0
 })
 
-// Computed: Verificar si hay resultados de búsqueda
 const hasSearchResults = computed((): boolean => {
   return searchResults.value.length > 0
 })
 
-// Computed: Verificar si mostrar "todos los productos"
 const showAllProducts = computed((): boolean => {
   return lastSearchTerm.value === '' && productsList.value.length > 0
 })
@@ -136,6 +130,7 @@ const showAllProducts = computed((): boolean => {
           :description="product.description"
           :category="product.category"
           :image="product.images[0]"
+          :brand="product.brand"
           :stock="10"
           :key="product.id"
         />
@@ -144,7 +139,6 @@ const showAllProducts = computed((): boolean => {
   </div>
 </template>
 
-<!-- TUS ESTILOS BEM AQUÍ (sin cambios) -->
 <style scoped>
 .products {
   margin-top: 2rem;
@@ -183,16 +177,16 @@ const showAllProducts = computed((): boolean => {
 
 .loading {
   text-align: center;
-  padding: 20px;
+  padding: 1.25rem;
   color: #64748b;
 }
 
 .error {
   text-align: center;
-  padding: 20px;
+  padding: 1.25rem;
   background: #fee2e2;
   color: #dc2626;
-  border-radius: 8px;
+  border-radius: var(--);
   margin: 20px 0;
 }
 </style>

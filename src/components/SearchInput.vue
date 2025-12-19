@@ -194,24 +194,7 @@ defineExpose({
   to { transform: rotate(360deg); }
 }
 
-/* Estados para input */
-.search__input-container--focused {
-  border-color: #3b82f6;
-  box-shadow: var(--shadow-lg);
-}
 
-.search__input-container--error {
-  border-color: #ef4444;
-}
-
-.search__input-container--success {
-  border-color: #10b981;
-}
-
-/* Estados para botón */
-.search__btn--loading {
-  position: relative;
-}
 
 .search__btn--loading::after {
   content: '';
@@ -250,97 +233,5 @@ defineExpose({
   }
 }
 
-.search__clear-btn {
-  background: none;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #94a3b8;
-  border-radius: 50%;
-  transition: all 0.2s ease;
-  margin-left: 4px;
-}
 
-.search__clear-btn:hover {
-  background: #f1f5f9;
-  color: #64748b;
-}
-
-.search__clear-btn:active {
-  transform: scale(0.9);
-}
-
-.search__status {
-  margin-top: 8px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  animation: search__slideDown 0.3s ease;
-}
-
-@keyframes search__slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.search__status--info {
-  background: #dbeafe;
-  color: #1e40af;
-  border: 1px solid #93c5fd;
-}
-
-.search__status--error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-}
-
-.search__status--success {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
-}
-
-.search--small .search__input {
-  padding: 8px 0;
-  font-size: 0.875rem;
-}
-
-.search--small .search__btn {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  min-width:  5rem;
-}
-
-.search--large .search__input {
-  padding: 1rem 0;
-  font-size: 1.125rem;
-}
-
-.search--large .search__btn {
-  padding: 1rem 2rem;
-  font-size: 1.125rem;
-  min-width: 7.5rem;
-}
-
-.search--active .search__input-container {
-  border-color: #10b981;
-}
-
-.search--active .search__btn {
-  background: #10b981;
-}
-
-.search--active .search__btn:hover:not(:disabled) {
-  background: #0da271;
-}
 </style>

@@ -10,13 +10,15 @@
             <img class="product-card__img" :src="image" :alt="title" />
             <div class="product-card__data">
                 <p> {{ description }} </p>
+                
                 <p class="product-card__category"> Category: {{ category }} </p>
             </div>
             
         </div>
-        <footer>
-            <p class="product-card__stock" v-if="stock > 0"> In Stock: {{ stock }} </p>
+        <footer class="product-card__footer">
+            <p v-if="stock > 0"> In Stock: {{ stock }} </p>
             <p v-else> Out of Stock </p>
+            <p> Brand:{{ brand }}</p>
         </footer>
     </article>
 </template>
@@ -29,7 +31,7 @@ defineProps<{
     category: string;
     image: string;
     stock: number;
-
+    brand: string;
 }>();
 </script>
 <style scoped>
@@ -79,12 +81,17 @@ defineProps<{
         font-style: italic;
         color: var(--color-secondary);
     }
-    .product-card__stock{
+    .product-card__footer{
+        display: flex;
+        justify-content: space-between;
         font-weight: bold;
         background-color: var(--color-accent);
         border-radius: 0 0 2rem 2rem;
         text-align: center;
-        padding: 0.5rem;
+        padding: 1rem;
+    }
+    .product-card__footer p{
+        flex: 1;
     }
     .product-card__img{
         width: 100%;
