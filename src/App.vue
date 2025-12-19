@@ -5,74 +5,73 @@ import { ProductService, type Product } from "./service/Service";
 import SearchInput from "./components/SearchInput.vue";
 
 const productsList = ref<Product[]>([]);
-const searchResults = ref<Product[]>([])
-const lastSearchTerm = ref<string>('')
-const isLoading = ref<boolean>(false)
-const error = ref<string | null>(null)
-const searchInputRef = ref<InstanceType<typeof SearchInput> | null>(null)
+const searchResults = ref<Product[]>([]);
+const lastSearchTerm = ref<string>("");
+const isLoading = ref<boolean>(false);
+const error = ref<string | null>(null);
+const searchInputRef = ref<InstanceType<typeof SearchInput> | null>(null);
 
 onMounted(async () => {
   try {
-    isLoading.value = true
+    isLoading.value = true;
     productsList.value = await ProductService.getAllProducts();
-    console.log('Productos cargados:', productsList.value.length);
+    console.log("Productos cargados:", productsList.value.length);
   } catch (err) {
-    console.error('Error cargando productos:', err)
-    error.value = 'Error al cargar productos'
+    console.error("Error cargando productos:", err);
+    error.value = "Error al cargar productos";
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 });
 
 const handleProductSearch = async (searchTerm: string): Promise<void> => {
-  lastSearchTerm.value = searchTerm
-  error.value = null
-  isLoading.value = true
-  
+  lastSearchTerm.value = searchTerm;
+  error.value = null;
+  isLoading.value = true;
+
   try {
-    const results = await ProductService.searchProducts(searchTerm)
-    searchResults.value = results
-    console.log('Resultados de búsqueda:', results.length)
-    
+    const results = await ProductService.searchProducts(searchTerm);
+    searchResults.value = results;
+    console.log("Resultados de búsqueda:", results.length);
   } catch (err) {
-    console.error('Error en búsqueda:', err)
-    error.value = 'Error al buscar productos'
-    searchResults.value = []
+    console.error("Error en búsqueda:", err);
+    error.value = "Error al buscar productos";
+    searchResults.value = [];
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 // Manejador de limpieza
 const handleClearSearch = (): void => {
-  searchResults.value = []
-  lastSearchTerm.value = ''
-  error.value = null
-}
+  searchResults.value = [];
+  lastSearchTerm.value = "";
+  error.value = null;
+};
 
 const displayedProducts = computed((): Product[] => {
   if (searchResults.value.length > 0) {
-    return searchResults.value
+    return searchResults.value;
   }
   // Si hay término de búsqueda pero NO resultados → array vacío
   if (lastSearchTerm.value) {
-    return []
+    return [];
   }
   // Caso por defecto: mostrar todos los productos
-  return productsList.value
-})
+  return productsList.value;
+});
 
 const showNoResults = computed((): boolean => {
-  return lastSearchTerm.value !== '' && searchResults.value.length === 0
-})
+  return lastSearchTerm.value !== "" && searchResults.value.length === 0;
+});
 
 const hasSearchResults = computed((): boolean => {
-  return searchResults.value.length > 0
-})
+  return searchResults.value.length > 0;
+});
 
 const showAllProducts = computed((): boolean => {
-  return lastSearchTerm.value === '' && productsList.value.length > 0
-})
+  return lastSearchTerm.value === "" && productsList.value.length > 0;
+});
 </script>
 
 <template>
@@ -96,9 +95,7 @@ const showAllProducts = computed((): boolean => {
 
     <section v-else class="results-section">
       <!-- Título solo si hay resultados -->
-      <h2 v-if="hasSearchResults">
-        Resultados ({{ searchResults.length }})
-      </h2>
+      <h2 v-if="hasSearchResults">Resultados ({{ searchResults.length }})</h2>
 
       <!-- Resultados de búsqueda -->
       <div v-if="hasSearchResults" class="products">
@@ -147,9 +144,11 @@ const showAllProducts = computed((): boolean => {
   justify-content: center;
   align-items: center;
   row-gap: 2rem;
-} 
-.results-section{
+}
+.results-section {
+  margin: 0 auto;
   margin-top: 2rem;
+  width: 100%;
 }
 .no-results {
   text-align: center;
@@ -188,5 +187,17 @@ const showAllProducts = computed((): boolean => {
   color: #dc2626;
   border-radius: var(--);
   margin: 20px 0;
+}
+@media (min-width: 768px) {
+  .products {
+    width: 90%;
+    flex-direction: row;
+    column-gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
+  }
+  
 }
 </style>
