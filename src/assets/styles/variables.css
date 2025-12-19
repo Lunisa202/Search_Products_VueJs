@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    font-size: 16px;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'Outfit', sans-serif;
+
+  --color-primary: #4A90E2;
+  --color-secondary: #48667f;
+  --color-accent: #F5A623;
+  --color-background: #F0F2F5;
+  --color-border: #926f6f;
+  --color-text: #333333;
+  --color-text-secondary: #f4f0f0;
+
+  --spacing-xs: .25rem;
+  --spacing-sm: .5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  --border-radius-sm: .5rem;
+  --border-radius-md: 1rem;
+  --border-radius-lg: 2rem;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
