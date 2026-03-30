@@ -25,9 +25,15 @@ onMounted(async () => {
 });
 
 const handleProductSearch = async (searchTerm: string): Promise<void> => {
-  lastSearchTerm.value = searchTerm;
-  error.value = null;
+
+   if (!searchTerm || searchTerm.trim() === "") {
+    searchResults.value = [];      // Vacía resultados
+    lastSearchTerm.value = "";     // Vacía el término
+    return;                        // No hace la búsqueda
+  }
+  
   isLoading.value = true;
+  
 
   try {
     const results = await ProductService.searchProducts(searchTerm);
@@ -100,7 +106,7 @@ const showAllProducts = computed((): boolean => {
       <!-- Resultados de búsqueda -->
       <div v-if="hasSearchResults" class="products">
         <CardProduct
-          v-for="product in searchResults"
+          v-for="product in displayedProducts"
           :title="product.title"
           :price="product.price"
           :description="product.description"

@@ -17,6 +17,15 @@
           @keyup.enter="handleSearch"
           ref="inputRef"
         />
+         <button
+          v-if="searchText.length > 0"
+          @click="handleClear"
+          class="search__clear-btn"
+          type="button"
+          aria-label="Limpiar búsqueda"
+        >
+          ✕
+        </button>
       </div>
       
       <button
@@ -34,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps, withDefaults } from 'vue'
+import { ref, watch } from 'vue'
 
 interface Props {
   placeholder?: string
@@ -46,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   search: [searchTerm: string]
+  clear: []  
 }>()
 
 const searchText = ref<string>('')
@@ -55,17 +65,27 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const handleSearch = (): void => {
   const trimmedText = searchText.value.trim()
   
-  if (trimmedText.length === 0) {
-    return
-  }
-
   isSearching.value = true
-  emit('search', trimmedText)
+  
+  emit('search', searchText.value)
   
   setTimeout(() => {
     isSearching.value = false
   }, 500)
 }
+const handleClear = (): void => {
+  searchText.value = ''        // Limpia el input
+  emit('clear')                // Emite evento clear al padre
+  emit('search', '')           // 🔥 CRUCIAL: Emite búsqueda con string vacío
+}
+
+watch(searchText, (newValue, oldValue) => {
+  // Si el usuario borró TODO el texto manualmente
+  if (oldValue !== '' && newValue === '') {
+    emit('clear')
+    emit('search', '')
+  }
+})
 
 const focus = (): void => {
   if (inputRef.value) {
@@ -233,5 +253,35 @@ defineExpose({
   }
 }
 
+.search__clear-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+}
 
+.search__clear-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.search__clear-btn:active {
+  transform: scale(0.95);
+}
+
+/* Ajusta el padding del input para que no se superponga con el botón */
+.search__input {
+  padding-right: 32px;  /* Espacio para el botón de limpiar */
+}
 </style>
