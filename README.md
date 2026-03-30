@@ -104,7 +104,7 @@ pnpm preview
 ## 🔧 Funcionalidades Técnicas
 
 ### Sistema de Búsqueda
-- Búsqueda en tiempo real sin necesidad de botón
+- Búsqueda en tiempo real 
 - Manejo de estados: loading, error, éxito
 
 ### Gestión de API
