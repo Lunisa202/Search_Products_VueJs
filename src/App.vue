@@ -14,7 +14,7 @@ const searchInputRef = ref<InstanceType<typeof SearchInput> | null>(null);
 onMounted(async () => {
   try {
     isLoading.value = true;
-    productsList.value = await ProductService.getAllProducts();
+    productsList.value = await ProductService.getAllProducts(200);
     console.log("Productos cargados:", productsList.value.length);
   } catch (err) {
     console.error("Error cargando productos:", err);
@@ -24,28 +24,26 @@ onMounted(async () => {
   }
 });
 
-const handleProductSearch = async (searchTerm: string): Promise<void> => {
-
-   if (!searchTerm || searchTerm.trim() === "") {
-    searchResults.value = [];      // Vacía resultados
-    lastSearchTerm.value = "";     // Vacía el término
-    return;                        // No hace la búsqueda
-  }
-  
-  isLoading.value = true;
-  
-
-  try {
-    const results = await ProductService.searchProducts(searchTerm);
-    searchResults.value = results;
-    console.log("Resultados de búsqueda:", results.length);
-  } catch (err) {
-    console.error("Error en búsqueda:", err);
-    error.value = "Error al buscar productos";
+const handleProductSearch = (searchTerm: string): void => {
+  if (!searchTerm || searchTerm.trim() === "") {
     searchResults.value = [];
-  } finally {
-    isLoading.value = false;
+    lastSearchTerm.value = "";
+    return;
   }
+
+  const term = searchTerm.trim().toLowerCase();
+  lastSearchTerm.value = term;
+
+  searchResults.value = productsList.value.filter((product) => {
+    return (
+      product.title.toLowerCase().includes(term) ||
+      (product.brand && product.brand.toLowerCase().includes(term)) ||
+      product.category.toLowerCase().includes(term) ||
+      product.description.toLowerCase().includes(term)
+    );
+  });
+
+  console.log("Resultados de búsqueda:", searchResults.value.length);
 };
 
 // Manejador de limpieza
@@ -112,7 +110,8 @@ const showAllProducts = computed((): boolean => {
           :description="product.description"
           :category="product.category"
           :image="product.images[0]"
-          :stock="10"
+          :stock="product.stock"
+          :brand="product.brand"
           :key="product.id"
         />
       </div>
@@ -134,7 +133,7 @@ const showAllProducts = computed((): boolean => {
           :category="product.category"
           :image="product.images[0]"
           :brand="product.brand"
-          :stock="10"
+          :stock="product.stock"
           :key="product.id"
         />
       </div>
