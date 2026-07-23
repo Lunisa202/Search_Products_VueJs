@@ -9,7 +9,6 @@ const searchResults = ref<Product[]>([]);
 const lastSearchTerm = ref<string>("");
 const isLoading = ref<boolean>(false);
 const error = ref<string | null>(null);
-const searchInputRef = ref<InstanceType<typeof SearchInput> | null>(null);
 
 onMounted(async () => {
   try {
@@ -109,7 +108,7 @@ const showAllProducts = computed((): boolean => {
           :price="product.price"
           :description="product.description"
           :category="product.category"
-          :image="product.images[0]"
+          :image="product.images?.[0] ?? ''"
           :stock="product.stock"
           :brand="product.brand"
           :key="product.id"
@@ -131,7 +130,7 @@ const showAllProducts = computed((): boolean => {
           :price="product.price"
           :description="product.description"
           :category="product.category"
-          :image="product.images[0]"
+          :image="product.images?.[0] ?? ''"
           :brand="product.brand"
           :stock="product.stock"
           :key="product.id"
@@ -190,7 +189,7 @@ const showAllProducts = computed((): boolean => {
   padding: 1.25rem;
   background: #fee2e2;
   color: #dc2626;
-  border-radius: var(--);
+  border-radius: var(--border-radius-sm);
   margin: 20px 0;
 }
 @media (min-width: 768px) {

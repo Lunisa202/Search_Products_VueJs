@@ -31,26 +31,27 @@
       <button
         @click="handleSearch"
         class="search__btn"
-        :disabled="isSearching || searchText.length === 0"
+        :disabled="searchText.length === 0"
         type="button"
         aria-label="Buscar productos"
       >
-        <span v-if="!isSearching" class="search__btn-text">Buscar</span>
-        <span v-else class="search__loading">Buscando...</span>
+        <span class="search__btn-text">Buscar</span>
       </button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 
 interface Props {
   placeholder?: string
+  debounceMs?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: 'Buscar producto...'
+  placeholder: 'Buscar producto...',
+  debounceMs: 300
 })
 
 const emit = defineEmits<{
@@ -59,31 +60,56 @@ const emit = defineEmits<{
 }>()
 
 const searchText = ref<string>('')
-const isSearching = ref<boolean>(false)
 const inputRef = ref<HTMLInputElement | null>(null)
+let debounceTimer: ReturnType<typeof setTimeout> | null = null
 
 const handleSearch = (): void => {
-  const trimmedText = searchText.value.trim()
-  
-  isSearching.value = true
-  
+  // Cancelar debounce pendiente si el usuario presiona Enter o el botón
+  if (debounceTimer) {
+    clearTimeout(debounceTimer)
+    debounceTimer = null
+  }
+
   emit('search', searchText.value)
-  
-  setTimeout(() => {
-    isSearching.value = false
-  }, 500)
 }
+
 const handleClear = (): void => {
-  searchText.value = ''        // Limpia el input
-  emit('clear')                // Emite evento clear al padre
-  emit('search', '')           // 🔥 CRUCIAL: Emite búsqueda con string vacío
+  if (debounceTimer) {
+    clearTimeout(debounceTimer)
+    debounceTimer = null
+  }
+  searchText.value = ''
+  emit('clear')
+  emit('search', '')
 }
 
 watch(searchText, (newValue, oldValue) => {
   // Si el usuario borró TODO el texto manualmente
   if (oldValue !== '' && newValue === '') {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+      debounceTimer = null
+    }
     emit('clear')
     emit('search', '')
+    return
+  }
+
+  // Debounce: emite búsqueda después del delay configurado
+  if (newValue.trim() !== '') {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer)
+    }
+    debounceTimer = setTimeout(() => {
+      emit('search', newValue)
+      debounceTimer = null
+    }, props.debounceMs)
+  }
+})
+
+onUnmounted(() => {
+  if (debounceTimer) {
+    clearTimeout(debounceTimer)
   }
 })
 
